@@ -1,7 +1,33 @@
 package com.softserve.logparser;
 
-public class Main {
-    public static void main(String[] args) {
+import java.io.IOException;
+import java.util.stream.Stream;
 
+public class Main {
+    public static void main(String[] args) throws IOException {
+        CommandLineParser commandLineParser = string -> {
+            return null;
+        };
+        KeysAndPathHolder keysAndPathHolder = commandLineParser.parse("");
+
+        FileReader fileReader = new FileReaderImpl();
+        Stream<String> stringStream = fileReader.read(keysAndPathHolder);
+
+        LogRecordParser logRecordParser = stream -> {
+            return null;
+        };
+        Stream<LogRecord> logRecordStream1 = logRecordParser.parse(stringStream);
+
+        LogRecordProcessor logRecordProcessor = (logRecordStream, keysHolder) -> {
+            return null;
+        };
+        StatInfo statInfo1 = logRecordProcessor.process(logRecordStream1, keysAndPathHolder);
+
+        Reporter reporter = statInfo -> {
+            return null;
+        };
+        String report = reporter.buildReport(statInfo1);
+
+        System.out.println(report);
     }
 }
