@@ -1,4 +1,8 @@
-package com.softserve.logparser;
+package com.softserve.logparser.core.impl;
+
+import com.softserve.logparser.core.LogRecord;
+import com.softserve.logparser.core.type.HttpMethod;
+import com.softserve.logparser.core.type.HttpProtocol;
 
 import java.time.LocalDateTime;
 

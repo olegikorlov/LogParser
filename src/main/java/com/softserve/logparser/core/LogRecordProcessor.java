@@ -1,4 +1,4 @@
-package com.softserve.logparser;
+package com.softserve.logparser.core;
 
 import java.util.stream.Stream;
 
@@ -8,6 +8,6 @@ import java.util.stream.Stream;
 @FunctionalInterface
 public interface LogRecordProcessor {
 
-    StatInfo process(Stream<LogRecord> logRecordStream, KeysHolder keysHolder);
+    StatInfo process(Stream<LogRecord> logRecordStream);
 
 }

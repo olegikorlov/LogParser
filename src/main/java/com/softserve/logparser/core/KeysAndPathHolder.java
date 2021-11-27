@@ -1,4 +1,4 @@
-package com.softserve.logparser;
+package com.softserve.logparser.core;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>

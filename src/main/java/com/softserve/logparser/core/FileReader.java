@@ -1,4 +1,4 @@
-package com.softserve.logparser;
+package com.softserve.logparser.core;
 
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -9,6 +9,6 @@ import java.util.stream.Stream;
 @FunctionalInterface
 public interface FileReader {
 
-    Stream<String> read(PathHolder path) throws IOException;
+    Stream<String> read() throws IOException;
 
 }
