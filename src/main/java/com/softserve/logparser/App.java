@@ -11,7 +11,6 @@ public class App {
         CommandLineParser commandLineParser = string -> {
             return null;
         };
-        KeysAndPathHolder keysAndPathHolder = commandLineParser.parse("");
 
         FileReader fileReader = new FileReaderImpl();
         Stream<String> stringStream = fileReader.read();
