@@ -14,7 +14,7 @@ Log Parser is a command line application that allows to parse Apache log records
 
 Format of the command:
 
-`lp [file name] --[identifier] --[method]=[argument]`
+`lp [file name] --[method]=[argument] --[identifier]`
 
 
 Parameter                 | Description
