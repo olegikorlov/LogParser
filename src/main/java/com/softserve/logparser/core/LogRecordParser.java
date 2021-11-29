@@ -8,6 +8,6 @@ import java.util.stream.Stream;
 @FunctionalInterface
 public interface LogRecordParser {
 
-    Stream<LogRecord> parse(Stream<String> stream);
+    Stream<LogRecord> parse();
 
 }

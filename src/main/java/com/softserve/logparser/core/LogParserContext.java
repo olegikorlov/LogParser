@@ -1,17 +1,15 @@
 package com.softserve.logparser.core;
 
+import java.nio.file.Path;
+import java.util.List;
+
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public interface LogParserContext {
+public interface LogParserContext extends PathHolder, KeysHolder {
 
-    void put(PathHolder pathHolder);
+    void put(Path path);
 
-    void put(KeysHolder keysHolder);
-
-    PathHolder getPathHolder();
-
-    KeysHolder getKeysHolder();
-
+    void put(List<String> keys);
 
 }

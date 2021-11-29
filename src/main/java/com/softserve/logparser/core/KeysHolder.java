@@ -1,6 +1,6 @@
 package com.softserve.logparser.core;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
@@ -8,6 +8,6 @@ import java.util.Map;
 @FunctionalInterface
 public interface KeysHolder {
 
-    Map<String, Integer> getKeys();
+    List<String> getKeys();
 
 }

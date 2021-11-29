@@ -1,35 +1,35 @@
 package com.softserve.logparser;
 
 import com.softserve.logparser.core.*;
-import com.softserve.logparser.core.impl.FileReaderImpl;
+import com.softserve.logparser.core.impl.*;
 
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class App {
+
     public static void main(String[] args) throws IOException {
-        CommandLineParser commandLineParser = string -> {
-            return null;
-        };
+
+        Scanner scanner = new Scanner(System.in);
+        String commandLine = String.join(" ", scanner.nextLine().split("\\s+"));
+        System.out.println(commandLine);
+
+        CommandLineParser commandLineParser = new CommandLineParserImpl();
+        commandLineParser.parse(commandLine);
 
         FileReader fileReader = new FileReaderImpl();
         Stream<String> stringStream = fileReader.read();
 
-        LogRecordParser logRecordParser = stream -> {
-            return null;
-        };
-        Stream<LogRecord> logRecordStream1 = logRecordParser.parse(stringStream);
+        LogRecordParser logRecordParser = new LogRecordParserImpl(stringStream);
+        Stream<LogRecord> logRecordStream = logRecordParser.parse();
 
-        LogRecordProcessor logRecordProcessor = (logRecordStream) -> {
-            return null;
-        };
-        StatInfo statInfo1 = logRecordProcessor.process(logRecordStream1);
+        LogRecordProcessor logRecordProcessor = new LogRecordProcessorImpl(logRecordStream);
+        StatInfo statInfo = logRecordProcessor.process();
 
-        Reporter reporter = statInfo -> {
-            return null;
-        };
-        String report = reporter.buildReport(statInfo1);
+        Reporter reporter = new ReporterImpl(statInfo);
+        String report = reporter.buildReport();
 
-        System.out.println(report);
+//        System.out.println(report);
     }
 }
