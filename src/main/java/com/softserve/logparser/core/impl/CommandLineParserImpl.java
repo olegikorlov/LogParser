@@ -20,8 +20,7 @@ public final class CommandLineParserImpl implements CommandLineParser {
     }
 
     @Override
-    public boolean parse(String string) {
-        String[] strings = string.split(" ");
+    public boolean parse(String[] strings) {
         if (strings.length < 1) {
             return false;
         }

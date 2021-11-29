@@ -4,19 +4,14 @@ import com.softserve.logparser.core.*;
 import com.softserve.logparser.core.impl.*;
 
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class App {
 
     public static void main(String[] args) throws IOException {
 
-        Scanner scanner = new Scanner(System.in);
-        String commandLine = String.join(" ", scanner.nextLine().split("\\s+"));
-        System.out.println(commandLine);
-
         CommandLineParser commandLineParser = new CommandLineParserImpl();
-        commandLineParser.parse(commandLine);
+        commandLineParser.parse(args);
 
         FileReader fileReader = new FileReaderImpl();
         Stream<String> stringStream = fileReader.read();

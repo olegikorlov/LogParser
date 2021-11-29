@@ -6,6 +6,6 @@ package com.softserve.logparser.core;
 @FunctionalInterface
 public interface CommandLineParser {
 
-    boolean parse(String string);
+    boolean parse(String[] string);
 
 }
