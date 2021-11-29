@@ -9,9 +9,14 @@ import java.nio.file.Path;
  */
 public final class PathHolderImpl implements PathHolder {
 
-    private final Path path;
+    private Path path;
 
-    public PathHolderImpl(Path path) {
+    public PathHolderImpl() {
+        this.path = Path.of("");
+    }
+
+    @Override
+    public void put(Path path) {
         this.path = path;
     }
 

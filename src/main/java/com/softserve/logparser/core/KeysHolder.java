@@ -5,8 +5,9 @@ import java.util.List;
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-@FunctionalInterface
 public interface KeysHolder {
+
+    void put(List<String> keys);
 
     List<String> getKeys();
 

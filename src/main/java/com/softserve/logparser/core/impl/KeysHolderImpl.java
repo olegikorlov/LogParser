@@ -2,6 +2,7 @@ package com.softserve.logparser.core.impl;
 
 import com.softserve.logparser.core.KeysHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,10 +10,15 @@ import java.util.List;
  */
 public final class KeysHolderImpl implements KeysHolder {
 
-    private final List<String> keys;
+    private List<String> keys;
 
-    public KeysHolderImpl(List<String> keys) {
-        this.keys = keys;
+    public KeysHolderImpl() {
+        this.keys = new ArrayList<>();
+    }
+
+    @Override
+    public void put(List<String> keys) {
+        this.keys.addAll(keys);
     }
 
     @Override

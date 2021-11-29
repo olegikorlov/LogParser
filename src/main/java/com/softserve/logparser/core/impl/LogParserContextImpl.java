@@ -5,7 +5,6 @@ import com.softserve.logparser.core.LogParserContext;
 import com.softserve.logparser.core.PathHolder;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,14 +12,13 @@ import java.util.List;
  */
 public final class LogParserContextImpl implements LogParserContext {
 
-    private PathHolder pathHolder;
-    private KeysHolder keysHolder;
-
     private static LogParserContext instance;
+    private final PathHolder pathHolder;
+    private final KeysHolder keysHolder;
 
     private LogParserContextImpl() {
-        this.pathHolder = new PathHolderImpl(Path.of(""));
-        this.keysHolder = new KeysHolderImpl(new ArrayList<>());
+        this.pathHolder = new PathHolderImpl();
+        this.keysHolder = new KeysHolderImpl();
     }
 
     public static LogParserContext getInstance() {
@@ -32,17 +30,17 @@ public final class LogParserContextImpl implements LogParserContext {
 
     @Override
     public void put(Path path) {
-        this.pathHolder = new PathHolderImpl(path);
-    }
-
-    @Override
-    public void put(List<String> keys) {
-        this.keysHolder = new KeysHolderImpl(keys);
+        pathHolder.put(path);
     }
 
     @Override
     public Path getPath() {
         return pathHolder.getPath();
+    }
+
+    @Override
+    public void put(List<String> keys) {
+        keysHolder.put(keys);
     }
 
     @Override
