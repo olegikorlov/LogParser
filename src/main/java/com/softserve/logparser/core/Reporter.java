@@ -6,6 +6,6 @@ package com.softserve.logparser.core;
 @FunctionalInterface
 public interface Reporter {
 
-    String buildReport(StatInfo statInfo);
+    String buildReport();
 
 }

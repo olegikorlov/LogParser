@@ -1,25 +1,31 @@
 package com.softserve.logparser.core.impl;
 
-import com.softserve.logparser.core.KeysHolder;
+import com.softserve.logparser.core.LogParserContext;
 import com.softserve.logparser.core.LogRecord;
 import com.softserve.logparser.core.LogRecordProcessor;
 import com.softserve.logparser.core.StatInfo;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public class LogRecordProcessorImpl implements LogRecordProcessor {
+public final class LogRecordProcessorImpl implements LogRecordProcessor {
 
-    private KeysHolder keysHolder;
+    private final LogParserContext context;
 
-    public LogRecordProcessorImpl() {
-        this.keysHolder = LogParserContextImpl.getInstance().getKeysHolder();
+    private Stream<LogRecord> logRecordStream;
+
+    public LogRecordProcessorImpl(Stream<LogRecord> logRecordStream) {
+        this.context = LogParserContextImpl.getInstance();
+        this.logRecordStream = logRecordStream;
     }
 
     @Override
-    public StatInfo process(Stream<LogRecord> logRecordStream) {
+    public StatInfo process() {
+        List<String> keys = context.getKeys();
+        System.out.println(String.join(", ", keys));
         return null;
     }
 

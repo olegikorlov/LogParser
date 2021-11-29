@@ -4,17 +4,21 @@ import com.softserve.logparser.core.KeysHolder;
 import com.softserve.logparser.core.LogParserContext;
 import com.softserve.logparser.core.PathHolder;
 
+import java.nio.file.Path;
+import java.util.List;
+
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public class LogParserContextImpl implements LogParserContext {
-
-    private PathHolder pathHolder;
-    private KeysHolder keysHolder;
+public final class LogParserContextImpl implements LogParserContext {
 
     private static LogParserContext instance;
+    private final PathHolder pathHolder;
+    private final KeysHolder keysHolder;
 
     private LogParserContextImpl() {
+        this.pathHolder = new PathHolderImpl();
+        this.keysHolder = new KeysHolderImpl();
     }
 
     public static LogParserContext getInstance() {
@@ -25,23 +29,23 @@ public class LogParserContextImpl implements LogParserContext {
     }
 
     @Override
-    public void put(PathHolder pathHolder) {
-        this.pathHolder = pathHolder;
+    public void put(Path path) {
+        pathHolder.put(path);
     }
 
     @Override
-    public void put(KeysHolder keysHolder) {
-        this.keysHolder = keysHolder;
+    public Path getPath() {
+        return pathHolder.getPath();
     }
 
     @Override
-    public PathHolder getPathHolder() {
-        return pathHolder;
+    public void put(List<String> keys) {
+        keysHolder.put(keys);
     }
 
     @Override
-    public KeysHolder getKeysHolder() {
-        return keysHolder;
+    public List<String> getKeys() {
+        return keysHolder.getKeys();
     }
 
 }

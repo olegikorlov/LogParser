@@ -1,13 +1,14 @@
 package com.softserve.logparser.core;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-@FunctionalInterface
 public interface KeysHolder {
 
-    Map<String, Integer> getKeys();
+    void put(List<String> keys);
+
+    List<String> getKeys();
 
 }
