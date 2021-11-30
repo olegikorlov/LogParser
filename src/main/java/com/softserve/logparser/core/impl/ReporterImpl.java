@@ -3,9 +3,8 @@ package com.softserve.logparser.core.impl;
 import com.softserve.logparser.core.Reporter;
 import com.softserve.logparser.core.StatInfo;
 
-/**
- * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
- */
+import java.util.function.Consumer;
+
 public final class ReporterImpl implements Reporter {
 
     private final StatInfo statInfo;
@@ -15,8 +14,9 @@ public final class ReporterImpl implements Reporter {
     }
 
     @Override
-    public String buildReport() {
-        return null;
-    }
+    public void buildReport(Consumer<String> out) {
+        statInfo.getInfo()
+                .forEach((k, v) -> out.accept(String.format("%s : %s%n", k, v)));
 
+    }
 }
