@@ -38,8 +38,6 @@ public final class LogRecordProcessorImpl implements LogRecordProcessor {
         if (temp.length == 2) {
             identifierArg = temp[1];
         }
-
         return new StatInfoImpl(method.apply(identifier.apply(logRecordStream, identifierArg), methodArg));
     }
-
 }
