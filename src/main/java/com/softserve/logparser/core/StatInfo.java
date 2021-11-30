@@ -1,7 +1,7 @@
 package com.softserve.logparser.core;
 
-/**
- * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
- */
+import java.util.Map;
+
 public interface StatInfo {
+    Map<String, Long> getInfo();
 }

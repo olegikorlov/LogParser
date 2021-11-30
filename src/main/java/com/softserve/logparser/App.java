@@ -2,6 +2,7 @@ package com.softserve.logparser;
 
 import com.softserve.logparser.core.*;
 import com.softserve.logparser.core.impl.*;
+import com.softserve.logparser.core.impl.processor.LogRecordProcessorImpl;
 
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -23,8 +24,7 @@ public class App {
         StatInfo statInfo = logRecordProcessor.process();
 
         Reporter reporter = new ReporterImpl(statInfo);
-        String report = reporter.buildReport();
+        reporter.buildReport(System.out::println);
 
-//        System.out.println(report);
     }
 }

@@ -5,6 +5,7 @@ import com.softserve.logparser.core.LogRecord;
 import com.softserve.logparser.core.LogRecordProcessor;
 import com.softserve.logparser.core.StatInfo;
 import com.softserve.logparser.core.impl.LogParserContextImpl;
+import com.softserve.logparser.core.impl.StatInfoImpl;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -37,9 +38,6 @@ public final class LogRecordProcessorImpl implements LogRecordProcessor {
         if (temp.length == 2) {
             identifierArg = temp[1];
         }
-
-        method.apply(identifier.apply(logRecordStream, identifierArg), methodArg);
-        return null;
+        return new StatInfoImpl(method.apply(identifier.apply(logRecordStream, identifierArg), methodArg));
     }
-
 }
