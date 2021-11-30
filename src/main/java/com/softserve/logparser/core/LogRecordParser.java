@@ -1,13 +1,25 @@
 package com.softserve.logparser.core;
 
-import java.util.stream.Stream;
+import com.softserve.logparser.core.impl.ExtendedLogRecord;
+
+import java.util.Optional;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-@FunctionalInterface
-public interface LogRecordParser {
+public final class LogRecordParser {
 
-    Stream<LogRecord> parse();
+    private LogRecordParser() {
+    }
+
+    public static Optional<LogRecord> parse(String string) {
+        if (string.length() < 1) {
+            return Optional.empty();
+        }
+        String[] strings = string.split(" ");
+        return Optional.of(ExtendedLogRecord.builder()
+                .ip(strings[0])
+                .build());
+    }
 
 }

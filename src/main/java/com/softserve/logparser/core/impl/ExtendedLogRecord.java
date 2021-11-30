@@ -11,6 +11,31 @@ import java.time.LocalDateTime;
  */
 public class ExtendedLogRecord implements LogRecord {
 
+    private final String ip;
+
+    private ExtendedLogRecord(Builder builder) {
+        this.ip = builder.ip;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private String ip;
+
+        public Builder ip(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
+        public ExtendedLogRecord build() {
+            return new ExtendedLogRecord(this);
+        }
+
+    }
+
     @Override
     public String getIP() {
         return null;
@@ -61,4 +86,11 @@ public class ExtendedLogRecord implements LogRecord {
         return null;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ExtendedLogRecord{");
+        sb.append("ip='").append(ip).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

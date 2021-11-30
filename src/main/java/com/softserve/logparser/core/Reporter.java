@@ -1,11 +1,13 @@
 package com.softserve.logparser.core;
 
+import java.util.function.Consumer;
+
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
 @FunctionalInterface
 public interface Reporter {
 
-    String buildReport();
+    void buildReport(Consumer<String> out);
 
 }

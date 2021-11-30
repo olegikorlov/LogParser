@@ -3,6 +3,8 @@ package com.softserve.logparser.core.impl;
 import com.softserve.logparser.core.Reporter;
 import com.softserve.logparser.core.StatInfo;
 
+import java.util.function.Consumer;
+
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
@@ -15,8 +17,7 @@ public final class ReporterImpl implements Reporter {
     }
 
     @Override
-    public String buildReport() {
-        return null;
+    public void buildReport(Consumer<String> out) {
     }
 
 }
