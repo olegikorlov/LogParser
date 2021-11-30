@@ -3,8 +3,8 @@ package com.softserve.logparser;
 import com.softserve.logparser.core.*;
 import com.softserve.logparser.core.impl.CommandLineParserImpl;
 import com.softserve.logparser.core.impl.FileReaderImpl;
-import com.softserve.logparser.core.impl.LogRecordProcessorImpl;
 import com.softserve.logparser.core.impl.ReporterImpl;
+import com.softserve.logparser.core.impl.processor.LogRecordProcessorImpl;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -37,5 +37,5 @@ public class App {
         reporter.buildReport(System.out::println);
 
     }
-    
+
 }
