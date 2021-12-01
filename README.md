@@ -1,4 +1,3 @@
-
 <h1 align="center">Log Parser</h1>
 
 <p align="center">
@@ -14,8 +13,7 @@ Log Parser is a command line application that allows to parse Apache log records
 
 Format of the command:
 
-`lp [file name] --[method]=[argument] --[identifier]`
-
+`logpars --[method]=[argument] --[identifier] [file]...`
 
 Parameter                 | Description
 ------------------------- | ------------------------------------------------------
@@ -23,7 +21,6 @@ Parameter                 | Description
 `[identifier]`            | Identifier for parsing
 `[method]`                | Method for parsing
 `[argument] `             | Any positive integer that sets the number of lines to display
-
 
 ### Identifier
 
@@ -35,7 +32,9 @@ Identifier                | Description
 
 ### Method
 
-Method                    | Description                                         
+Method                    | Description
 ------------------------- | ------------------------------------------------------
-`--top`                   | Descending order                                      
+`--top`                   | Descending order
 `--tail`                  | Ascending order
+
+Usage example: --top=3 --ip apache_logs.txt apache_logs_1.txt

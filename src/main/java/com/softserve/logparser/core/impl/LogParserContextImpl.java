@@ -1,11 +1,12 @@
 package com.softserve.logparser.core.impl;
 
-import com.softserve.logparser.core.KeysHolder;
 import com.softserve.logparser.core.LogParserContext;
-import com.softserve.logparser.core.PathHolder;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
@@ -13,12 +14,12 @@ import java.util.List;
 public final class LogParserContextImpl implements LogParserContext {
 
     private static LogParserContext instance;
-    private final PathHolder pathHolder;
-    private final KeysHolder keysHolder;
+    private final Set<Path> paths;
+    private final List<String> keys;
 
     private LogParserContextImpl() {
-        this.pathHolder = new PathHolderImpl();
-        this.keysHolder = new KeysHolderImpl();
+        this.paths = new HashSet<>();
+        this.keys = new ArrayList<>();
     }
 
     public static LogParserContext getInstance() {
@@ -29,23 +30,23 @@ public final class LogParserContextImpl implements LogParserContext {
     }
 
     @Override
-    public void put(Path path) {
-        pathHolder.put(path);
+    public Set<Path> getPaths() {
+        return paths;
     }
 
     @Override
-    public Path getPath() {
-        return pathHolder.getPath();
+    public void putPaths(Set<Path> paths) {
+        this.paths.addAll(paths);
     }
 
     @Override
-    public void put(List<String> keys) {
-        keysHolder.put(keys);
+    public void putKeys(List<String> keys) {
+        this.keys.addAll(keys);
     }
 
     @Override
     public List<String> getKeys() {
-        return keysHolder.getKeys();
+        return keys;
     }
 
 }

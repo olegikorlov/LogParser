@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface KeysHolder {
 
-    void put(List<String> keys);
+    void putKeys(List<String> keys);
 
     List<String> getKeys();
 

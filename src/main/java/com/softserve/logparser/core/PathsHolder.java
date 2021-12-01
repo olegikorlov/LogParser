@@ -1,14 +1,15 @@
 package com.softserve.logparser.core;
 
 import java.nio.file.Path;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public interface PathHolder {
+public interface PathsHolder {
 
-    void put(Path path);
+    void putPaths(Set<Path> paths);
 
-    Path getPath();
+    Set<Path> getPaths();
 
 }
