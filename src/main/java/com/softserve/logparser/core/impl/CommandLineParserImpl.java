@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  */
 public final class CommandLineParserImpl implements CommandLineParser {
 
-    private LogParserContext context;
+    private final LogParserContext context;
 
     public CommandLineParserImpl() {
         this.context = LogParserContextImpl.getInstance();
@@ -24,11 +24,16 @@ public final class CommandLineParserImpl implements CommandLineParser {
         if (strings.length < 1) {
             return false;
         }
-        System.out.println(strings[0]);
-        context.put(Path.of(strings[0]));
+
+        List<String> files = Arrays.stream(strings)
+//                .sorted()
+                .dropWhile(string -> string.startsWith("-"))
+                .collect(Collectors.toList());
+        context.put(Path.of(files.get(0)));
 
         List<String> keys = Arrays.stream(strings)
-                .skip(1)
+//                .sorted()
+                .takeWhile(string -> string.startsWith("-"))
                 .collect(Collectors.toList());
         context.put(keys);
         return true;
