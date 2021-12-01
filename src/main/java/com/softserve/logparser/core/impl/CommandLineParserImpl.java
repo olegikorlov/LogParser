@@ -6,6 +6,7 @@ import com.softserve.logparser.core.LogParserContext;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -13,24 +14,24 @@ import java.util.stream.Collectors;
  */
 public final class CommandLineParserImpl implements CommandLineParser {
 
-    private LogParserContext context;
-
-    public CommandLineParserImpl() {
-        this.context = LogParserContextImpl.getInstance();
-    }
-
     @Override
     public boolean parse(String[] strings) {
         if (strings.length < 1) {
             return false;
         }
-        System.out.println(strings[0]);
-        context.put(Path.of(strings[0]));
+        LogParserContext context = LogParserContext.getInstance();
+        Set<Path> paths = Arrays.stream(strings)
+//                .sorted()
+                .dropWhile(string -> string.startsWith("-"))
+                .map(Path::of)
+                .collect(Collectors.toSet());
+        context.putPaths(paths);
 
         List<String> keys = Arrays.stream(strings)
-                .skip(1)
+//                .sorted()
+                .takeWhile(string -> string.startsWith("-"))
                 .collect(Collectors.toList());
-        context.put(keys);
+        context.putKeys(keys);
         return true;
     }
 

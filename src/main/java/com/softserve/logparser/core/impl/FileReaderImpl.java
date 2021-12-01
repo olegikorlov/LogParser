@@ -12,15 +12,18 @@ import java.util.stream.Stream;
  */
 public final class FileReaderImpl implements FileReader {
 
-    private final LogParserContext context;
-
-    public FileReaderImpl() {
-        this.context = LogParserContextImpl.getInstance();
-    }
-
     @Override
-    public Stream<String> read() throws IOException {
-        return Files.lines(context.getPath());
+    public Stream<String> read() {
+        LogParserContext context = LogParserContext.getInstance();
+        return context.getPaths().stream()
+                .flatMap(path -> {
+                    try {
+                        return Files.lines(path);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return Stream.empty();
+                });
     }
 
 }

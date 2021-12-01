@@ -18,6 +18,7 @@ public final class ReporterImpl implements Reporter {
 
     @Override
     public void buildReport(Consumer<String> out) {
+        statInfo.getInfo().forEach((a, b) -> out.accept(String.format("%s : %s", a, b)));
     }
 
 }

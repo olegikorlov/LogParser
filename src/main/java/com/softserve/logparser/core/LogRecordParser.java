@@ -1,7 +1,11 @@
 package com.softserve.logparser.core;
 
 import com.softserve.logparser.core.impl.ExtendedLogRecord;
+import com.softserve.logparser.core.type.HttpMethod;
+import com.softserve.logparser.core.type.HttpProtocol;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -19,7 +23,7 @@ public final class LogRecordParser {
     private static final String USER_ID_RGX = "(?<userid>\\S+)";
     private static final String TIMESTAMP_RGX = "\\[(?<timestamp>[^\\]]+)\\]";
     private static final String METHOD_RGX = "\"(?<method>[A-Z]+)";
-    private static final String REQUEST_RGX = "(?<request>[^ \"]+)";
+    private static final String REQUEST_RGX = "(?<resource>[^ \"]+)";
     private static final String PROTOCOL_RGX = "(?<protocol>HTTP/[0-9.]+)\"";
     private static final String STATUS_RGX = "(?<status>[0-9]{3})";
     private static final String SIZE_RGX = "(?<size>[0-9]+|-)";
@@ -41,20 +45,28 @@ public final class LogRecordParser {
             System.out.println(matcher.group(i));
         }
 */
-        return Optional.of(ExtendedLogRecord.builder()
-                .ip(matcher.group("ip"))
-//                .identifier(matcher.group("identifier"))
-//                .userId(matcher.group("userid"))
-//                .timestamp(matcher.group("timestamp"))
-//                .method(matcher.group("method"))
-//                .request(matcher.group("request"))
-//                .protocol(matcher.group("protocol"))
-//                .timestamp(matcher.group("timestamp"))
-//                .status(matcher.group("status"))
-//                .size(matcher.group("size"))
-//                .referrer(matcher.group("referrer"))
-//                .useragent(matcher.group("useragent"))
-                .build());
+        try {
+            String timestamp = matcher.group("timestamp");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z");
+            ZonedDateTime dateTime = ZonedDateTime.parse(timestamp, formatter);
+            return Optional.of(ExtendedLogRecord.builder()
+                    .ip(matcher.group("ip"))
+                    .identifier(matcher.group("identifier"))
+                    .userId(matcher.group("userid"))
+                    .timestamp(dateTime)
+                    .method(HttpMethod.valueOf(matcher.group("method")))
+                    .resource(matcher.group("resource"))
+                    .protocol(HttpProtocol.parse(matcher.group("protocol")))
+                    .statusCode(Integer.parseInt(matcher.group("status")))
+//                    .size(Long.parseLong(matcher.group("size")))
+                    .referrer(matcher.group("referrer"))
+                    .userAgent(matcher.group("useragent"))
+                    .build());
+        } catch (Exception e) {
+            String msg = String.format("## Can't read this log record: %s%nstack trace: %s", string, e.getMessage());
+            LOGGER.warning(msg);
+            return Optional.empty();
+        }
     }
 
     private static Matcher getMatcher(String string) {

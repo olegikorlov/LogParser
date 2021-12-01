@@ -25,13 +25,8 @@ public class App {
                 .filter(Predicate.not(Optional::isEmpty))
                 .map(Optional::get);
 
-        // test
-        logRecordStream
-                .limit(5)
-                .forEach(System.out::println);
-
-        LogRecordProcessor logRecordProcessor = new LogRecordProcessorImpl(logRecordStream);
-        StatInfo statInfo = logRecordProcessor.process();
+        LogRecordProcessor logRecordProcessor = new LogRecordProcessorImpl();
+        StatInfo statInfo = logRecordProcessor.process(logRecordStream);
 
         Reporter reporter = new ReporterImpl(statInfo);
         reporter.buildReport(System.out::println);
