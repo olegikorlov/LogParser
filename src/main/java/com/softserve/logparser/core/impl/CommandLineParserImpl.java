@@ -14,18 +14,12 @@ import java.util.stream.Collectors;
  */
 public final class CommandLineParserImpl implements CommandLineParser {
 
-    private final LogParserContext context;
-
-    public CommandLineParserImpl() {
-        this.context = LogParserContextImpl.getInstance();
-    }
-
     @Override
     public boolean parse(String[] strings) {
         if (strings.length < 1) {
             return false;
         }
-
+        LogParserContext context = LogParserContext.getInstance();
         Set<Path> paths = Arrays.stream(strings)
 //                .sorted()
                 .dropWhile(string -> string.startsWith("-"))

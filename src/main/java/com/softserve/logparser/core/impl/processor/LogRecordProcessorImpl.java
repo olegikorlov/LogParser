@@ -4,7 +4,6 @@ import com.softserve.logparser.core.LogParserContext;
 import com.softserve.logparser.core.LogRecord;
 import com.softserve.logparser.core.LogRecordProcessor;
 import com.softserve.logparser.core.StatInfo;
-import com.softserve.logparser.core.impl.LogParserContextImpl;
 import com.softserve.logparser.core.impl.StatInfoImpl;
 
 import java.util.List;
@@ -12,17 +11,9 @@ import java.util.stream.Stream;
 
 public final class LogRecordProcessorImpl implements LogRecordProcessor {
 
-    private final LogParserContext context;
-
-    private final Stream<LogRecord> logRecordStream;
-
-    public LogRecordProcessorImpl(Stream<LogRecord> logRecordStream) {
-        this.context = LogParserContextImpl.getInstance();
-        this.logRecordStream = logRecordStream;
-    }
-
     @Override
-    public StatInfo process() {
+    public StatInfo process(Stream<LogRecord> logRecordStream) {
+        LogParserContext context = LogParserContext.getInstance();
         List<String> keys = context.getKeys();
 
         String[] temp = keys.get(0).replace("-", "").split("=");
