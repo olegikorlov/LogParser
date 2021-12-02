@@ -13,28 +13,32 @@ Log Parser is a command line application that allows to parse Apache log records
 
 Format of the command:
 
-`logpars --[method]=[argument] --[identifier] [file]...`
+`lp -[key=value]... [file]...`
 
 Parameter                 | Description
 ------------------------- | ------------------------------------------------------
-`[file name]`             | File that will be parsed
-`[identifier]`            | Identifier for parsing
-`[method]`                | Method for parsing
-`[argument] `             | Any positive integer that sets the number of lines to display
+`[file names]`            | File that will be parsed
+`[key=value]`             | Special key and optional value
 
-### Identifier
+### Keys
 
-Identifier                | Description
+Key                       | Description
 ------------------------- | ------------------------------------------------------
-`-i (--ip)`               | Parsing log by IP-address
-`-r (--resource)`         | Parsing log by resource
-`-s (--status)`           | Parsing log by response status code
+`-ip`                     | Displays the number of requests from IP
+`-res`                    | Displays the number of requests to the site(s)
+`-sc`                     | TODO
+`-size`                   | Displays the correspondence of sites with the amount of data loaded from them
+`-from`                   | Sets the start date
+`-to`                     | Sets the final date
+`-l`                      | Sets the maximum lines to show
+`-a`                      | Sets an ascending order for output
+`-d`                      | Sets a descending order for output
 
-### Method
 
-Method                    | Description
-------------------------- | ------------------------------------------------------
-`--top`                   | Descending order
-`--tail`                  | Ascending order
 
-Usage example: --top=3 --ip apache_logs.txt apache_logs_1.txt
+
+
+Usage example:    
+`-ip -l=10 -a apache_logs_1.txt apache_logs_2.txt`    
+`-size -l=30 -from=2016-02-14T18:00:00 apache_logs_1.txt`    
+`-sc=4xx -d apache_logs_1.txt`
