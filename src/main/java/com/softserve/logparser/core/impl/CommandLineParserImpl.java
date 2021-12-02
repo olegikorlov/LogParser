@@ -2,6 +2,8 @@ package com.softserve.logparser.core.impl;
 
 import com.softserve.logparser.core.CommandLineParser;
 import com.softserve.logparser.core.LogParserContext;
+import com.softserve.logparser.core.parser.option.Option;
+import com.softserve.logparser.core.parser.option.OptionParser;
 
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -31,6 +33,14 @@ public final class CommandLineParserImpl implements CommandLineParser {
 //                .sorted()
                 .takeWhile(string -> string.startsWith("-"))
                 .collect(Collectors.toList());
+
+        Set<Option> options = Arrays.stream(strings)
+                .takeWhile(string -> string.startsWith("-"))
+                .map(OptionParser::parse)
+                .collect(Collectors.toSet());
+        options.forEach(System.out::println);
+//        context.putKeys(options);
+
         context.putKeys(keys);
         return true;
     }
