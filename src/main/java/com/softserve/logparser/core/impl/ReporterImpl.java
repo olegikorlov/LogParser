@@ -5,9 +5,6 @@ import com.softserve.logparser.core.StatInfo;
 
 import java.util.function.Consumer;
 
-/**
- * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
- */
 public final class ReporterImpl implements Reporter {
 
     private final StatInfo statInfo;
@@ -18,7 +15,7 @@ public final class ReporterImpl implements Reporter {
 
     @Override
     public void buildReport(Consumer<String> out) {
-        statInfo.getInfo().forEach((a, b) -> out.accept(String.format("%s : %s", a, b)));
+        statInfo.getInfo().forEach((a, b) -> out.accept(String.format("%10s : %s", b, a)));
     }
 
 }

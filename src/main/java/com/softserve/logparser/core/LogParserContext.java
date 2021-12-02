@@ -1,23 +1,17 @@
 package com.softserve.logparser.core;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-/**
- * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
- */
 public final class LogParserContext {
 
     private static LogParserContext instance;
     private final Set<Path> paths;
-    private final List<String> keys;
+    private final Map<String, String> keys;
 
     private LogParserContext() {
         this.paths = new HashSet<>();
-        this.keys = new ArrayList<>();
+        this.keys = new HashMap<>();
     }
 
     public static LogParserContext getInstance() {
@@ -35,11 +29,11 @@ public final class LogParserContext {
         this.paths.addAll(paths);
     }
 
-    public void putKeys(List<String> keys) {
-        this.keys.addAll(keys);
+    public void putKeys(Map<String, String> keys) {
+        this.keys.putAll(keys);
     }
 
-    public List<String> getKeys() {
+    public Map<String, String> getKeys() {
         return keys;
     }
 

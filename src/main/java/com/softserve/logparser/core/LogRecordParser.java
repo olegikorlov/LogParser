@@ -6,6 +6,7 @@ import com.softserve.logparser.core.type.HttpProtocol;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -40,14 +41,9 @@ public final class LogRecordParser {
             LOGGER.warning(message);
             return Optional.empty();
         }
-/*
-        for (int i = 1; i <= matcher.groupCount(); i++) {
-            System.out.println(matcher.group(i));
-        }
-*/
         try {
             String timestamp = matcher.group("timestamp");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z", Locale.US);
             ZonedDateTime dateTime = ZonedDateTime.parse(timestamp, formatter);
             return Optional.of(ExtendedLogRecord.builder()
                     .ip(matcher.group("ip"))
@@ -58,7 +54,7 @@ public final class LogRecordParser {
                     .resource(matcher.group("resource"))
                     .protocol(HttpProtocol.parse(matcher.group("protocol")))
                     .statusCode(Integer.parseInt(matcher.group("status")))
-//                    .size(Long.parseLong(matcher.group("size")))
+                    .size(Long.parseLong(matcher.group("size")))
                     .referrer(matcher.group("referrer"))
                     .userAgent(matcher.group("useragent"))
                     .build());
