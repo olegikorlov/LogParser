@@ -6,7 +6,8 @@ import com.softserve.logparser.core.LogRecordProcessor;
 import com.softserve.logparser.core.StatInfo;
 import com.softserve.logparser.core.impl.StatInfoImpl;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Stream;
 
 public final class LogRecordProcessorImpl implements LogRecordProcessor {
@@ -14,21 +15,27 @@ public final class LogRecordProcessorImpl implements LogRecordProcessor {
     @Override
     public StatInfo process(Stream<LogRecord> logRecordStream) {
         LogParserContext context = LogParserContext.getInstance();
-        List<String> keys = context.getKeys();
+        Map<String, String> keys = context.getKeys();
 
-        String[] temp = keys.get(0).replace("-", "").split("=");
-        int methodArg = Integer.MAX_VALUE;
-        Method method = Method.valueOf(temp[0].toUpperCase());
-        if (temp.length == 2) {
-            methodArg = Integer.parseInt(temp[1]);
-        }
+        LocalDateTime date1 = LocalDateTime.parse(keys.getOrDefault("FROM", LocalDateTime.MIN.toString()));
+        LocalDateTime date2 = LocalDateTime.parse(keys.getOrDefault("TO", LocalDateTime.MAX.toString()));
 
-        temp = keys.get(1).replace("-", "").split("=");
-        String identifierArg = ".*";
-        Identifier identifier = Identifier.valueOf(temp[0].toUpperCase());
-        if (temp.length == 2) {
-            identifierArg = temp[1];
-        }
-        return new StatInfoImpl(method.apply(identifier.apply(logRecordStream, identifierArg), methodArg));
+        int limit = Integer.parseInt(keys.getOrDefault("L", Integer.toString(Integer.MAX_VALUE)));
+
+        Stream<LogRecord> filteredStream = logRecordStream
+                .filter(s -> s.getTimeStamp().toLocalDateTime().isAfter(date1) && s.getTimeStamp().toLocalDateTime().isBefore(date2));
+
+        String mainOption = keys.keySet().stream()
+                .filter(k -> k.equals("IP") || k.equals("RES") || k.equals("SC") || k.equals("SIZE"))
+                .findFirst()
+                .orElse("IP");
+        Map<String, Long> map = Option.valueOf(mainOption).apply(filteredStream, keys.getOrDefault(mainOption, ""));
+
+        String order = keys.keySet().stream()
+                .filter(k -> k.equals("A") || k.equals("D"))
+                .findFirst()
+                .orElse("N");
+
+        return new StatInfoImpl(Order.valueOf(order).apply(map, limit));
     }
 }

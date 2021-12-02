@@ -4,14 +4,9 @@ import com.softserve.logparser.core.CommandLineParser;
 import com.softserve.logparser.core.LogParserContext;
 
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
- */
 public final class CommandLineParserImpl implements CommandLineParser {
 
     @Override
@@ -21,17 +16,27 @@ public final class CommandLineParserImpl implements CommandLineParser {
         }
         LogParserContext context = LogParserContext.getInstance();
         Set<Path> paths = Arrays.stream(strings)
-//                .sorted()
                 .dropWhile(string -> string.startsWith("-"))
                 .map(Path::of)
                 .collect(Collectors.toSet());
         context.putPaths(paths);
 
         List<String> keys = Arrays.stream(strings)
-//                .sorted()
                 .takeWhile(string -> string.startsWith("-"))
                 .collect(Collectors.toList());
-        context.putKeys(keys);
+
+        Map<String, String> keysMap = new LinkedHashMap<>();
+
+        for (var i : keys) {
+            String[] temp = i.split("=");
+            String arg = "";
+            if (temp.length == 2) {
+                arg = temp[1];
+            }
+            keysMap.merge(temp[0].replace("-", "").toUpperCase(), arg, (a, b) -> b);
+        }
+
+        context.putKeys(keysMap);
         return true;
     }
 
