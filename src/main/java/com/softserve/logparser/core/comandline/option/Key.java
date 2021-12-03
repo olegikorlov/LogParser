@@ -77,7 +77,8 @@ public enum Key {
                     arg.replace("*", "[0-9]");
             return logRecordStream
                     .filter(logRecord -> Integer.toString(logRecord.getStatusCode()).matches(pattern))
-                    .map(LogRecord::getResource)
+                    .map(LogRecord::getStatusCode)
+                    .map(String::valueOf)
                     .collect(Collectors.toMap(key -> key, value -> 1L, Long::sum, LinkedHashMap::new));
         }
     },
