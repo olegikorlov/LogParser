@@ -23,7 +23,6 @@ public final class CommandLineParser {
         }
         LogParserContext context = LogParserContext.getInstance();
         Set<Path> paths = Arrays.stream(strings)
-//                .sorted()
                 .dropWhile(string -> string.startsWith("-"))
                 .map(Path::of)
                 .collect(Collectors.toSet());
@@ -33,7 +32,6 @@ public final class CommandLineParser {
                 .takeWhile(string -> string.startsWith("-"))
                 .map(OptionParser::parse)
                 .collect(Collectors.toSet());
-//        options.forEach(System.out::println);
         context.putKeys(options);
         return true;
     }

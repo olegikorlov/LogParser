@@ -7,10 +7,7 @@ import com.softserve.logparser.core.context.LogParserContext;
 import com.softserve.logparser.core.logrecord.LogRecord;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 public final class LogRecordProcessor {
@@ -31,7 +28,7 @@ public final class LogRecordProcessor {
             }
             Map<String, Long> map = new HashMap<>();
             map.put(String.format("%n%s", stringBuilder), 0L);
-            return new StatInfoImpl(map);
+            return new StatInfoImpl(map, List.of(new Option(Key.HELP)));
         }
 
         LocalDateTime fromDate = LocalDateTime.parse(getFromDate(keys));
@@ -44,7 +41,6 @@ public final class LogRecordProcessor {
 
         Option identifierOption = keys.stream()
                 .filter(option -> option.getType().equals(OptionType.IDENTIFIER))
-//                .peek(System.out::println)
                 .findFirst()
                 .orElse(new Option(Key.IP));
 
@@ -56,7 +52,10 @@ public final class LogRecordProcessor {
                 .findFirst()
                 .orElse(Key.DESC);
 
-        return new StatInfoImpl(orderKey.apply(map, limit));
+        List<Option> info = List.of(identifierOption);
+
+
+        return new StatInfoImpl(orderKey.apply(map, limit), info);
     }
 
     private static int getLimit(Set<Option> keys) {

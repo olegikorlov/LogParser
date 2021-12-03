@@ -11,10 +11,11 @@ public class OptionParser {
     private static final String PREFIX = "-";
 
     private OptionParser() {
+        throw new IllegalStateException("Utility class");
     }
 
     public static Option parse(String string) {
-        String stringWithoutPrefix = string.replaceAll(PREFIX, "");
+        String stringWithoutPrefix = string.replace(PREFIX, "");
         if (!stringWithoutPrefix.contains(DELIMITER)) {
             return new Option(Key.valueOf(stringWithoutPrefix.toUpperCase(Locale.ROOT)));
         }

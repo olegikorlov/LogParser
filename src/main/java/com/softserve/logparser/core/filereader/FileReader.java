@@ -11,6 +11,10 @@ import java.util.stream.Stream;
  */
 public final class FileReader {
 
+    private FileReader() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static Stream<String> read() {
         LogParserContext context = LogParserContext.getInstance();
         return context.getPaths().stream()

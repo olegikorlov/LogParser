@@ -51,7 +51,7 @@ public final class LogRecordParser {
                     .resource(matcher.group("resource"))
                     .protocol(HttpProtocol.parse(matcher.group("protocol")))
                     .statusCode(Integer.parseInt(matcher.group("status")))
-//                    .size(Long.parseLong(matcher.group("size")))
+                    .size(Long.parseLong(matcher.group("size")))
                     .referrer(matcher.group("referrer"))
                     .userAgent(matcher.group("useragent"))
                     .build());
