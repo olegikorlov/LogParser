@@ -1,4 +1,4 @@
-package com.softserve.logparser.core.parser.option;
+package com.softserve.logparser.core.comandline.option;
 
 import java.util.Locale;
 

@@ -1,9 +1,10 @@
-package com.softserve.logparser.core;
+package com.softserve.logparser.core.context;
+
+import com.softserve.logparser.core.comandline.option.Option;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -13,11 +14,11 @@ public final class LogParserContext {
 
     private static LogParserContext instance;
     private final Set<Path> paths;
-    private final List<String> keys;
+    private final Set<Option> keys;
 
     private LogParserContext() {
         this.paths = new HashSet<>();
-        this.keys = new ArrayList<>();
+        this.keys = new LinkedHashSet<>();
     }
 
     public static LogParserContext getInstance() {
@@ -35,11 +36,11 @@ public final class LogParserContext {
         this.paths.addAll(paths);
     }
 
-    public void putKeys(List<String> keys) {
+    public void putKeys(Set<Option> keys) {
         this.keys.addAll(keys);
     }
 
-    public List<String> getKeys() {
+    public Set<Option> getKeys() {
         return keys;
     }
 

@@ -1,7 +1,4 @@
-package com.softserve.logparser.core;
-
-import com.softserve.logparser.core.type.HttpMethod;
-import com.softserve.logparser.core.type.HttpProtocol;
+package com.softserve.logparser.core.logrecord;
 
 import java.time.ZonedDateTime;
 

@@ -1,4 +1,4 @@
-package com.softserve.logparser.core.parser.option;
+package com.softserve.logparser.core.comandline.option;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
@@ -27,6 +27,21 @@ public class Option {
 
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Option option = (Option) o;
+
+        return key == option.key;
+    }
+
+    @Override
+    public int hashCode() {
+        return key != null ? key.hashCode() : 0;
     }
 
     @Override

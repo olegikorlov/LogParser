@@ -1,11 +1,8 @@
-package com.softserve.logparser.core;
-
-import com.softserve.logparser.core.impl.ExtendedLogRecord;
-import com.softserve.logparser.core.type.HttpMethod;
-import com.softserve.logparser.core.type.HttpProtocol;
+package com.softserve.logparser.core.logrecord;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -40,14 +37,10 @@ public final class LogRecordParser {
             LOGGER.warning(message);
             return Optional.empty();
         }
-/*
-        for (int i = 1; i <= matcher.groupCount(); i++) {
-            System.out.println(matcher.group(i));
-        }
-*/
+
         try {
             String timestamp = matcher.group("timestamp");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z", Locale.US);
             ZonedDateTime dateTime = ZonedDateTime.parse(timestamp, formatter);
             return Optional.of(ExtendedLogRecord.builder()
                     .ip(matcher.group("ip"))

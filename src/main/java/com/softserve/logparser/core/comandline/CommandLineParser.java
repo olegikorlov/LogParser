@@ -1,23 +1,23 @@
-package com.softserve.logparser.core.impl;
+package com.softserve.logparser.core.comandline;
 
-import com.softserve.logparser.core.CommandLineParser;
-import com.softserve.logparser.core.LogParserContext;
-import com.softserve.logparser.core.parser.option.Option;
-import com.softserve.logparser.core.parser.option.OptionParser;
+import com.softserve.logparser.core.comandline.option.Option;
+import com.softserve.logparser.core.comandline.option.OptionParser;
+import com.softserve.logparser.core.context.LogParserContext;
 
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public final class CommandLineParserImpl implements CommandLineParser {
+public final class CommandLineParser {
 
-    @Override
-    public boolean parse(String[] strings) {
+    private CommandLineParser() {
+    }
+
+    public static boolean parse(String[] strings) {
         if (strings.length < 1) {
             return false;
         }
@@ -29,19 +29,12 @@ public final class CommandLineParserImpl implements CommandLineParser {
                 .collect(Collectors.toSet());
         context.putPaths(paths);
 
-        List<String> keys = Arrays.stream(strings)
-//                .sorted()
-                .takeWhile(string -> string.startsWith("-"))
-                .collect(Collectors.toList());
-
         Set<Option> options = Arrays.stream(strings)
                 .takeWhile(string -> string.startsWith("-"))
                 .map(OptionParser::parse)
                 .collect(Collectors.toSet());
-        options.forEach(System.out::println);
-//        context.putKeys(options);
-
-        context.putKeys(keys);
+//        options.forEach(System.out::println);
+        context.putKeys(options);
         return true;
     }
 

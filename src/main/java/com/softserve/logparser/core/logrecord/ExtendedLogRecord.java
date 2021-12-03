@@ -1,8 +1,4 @@
-package com.softserve.logparser.core.impl;
-
-import com.softserve.logparser.core.LogRecord;
-import com.softserve.logparser.core.type.HttpMethod;
-import com.softserve.logparser.core.type.HttpProtocol;
+package com.softserve.logparser.core.logrecord;
 
 import java.time.ZonedDateTime;
 
@@ -10,17 +6,17 @@ import java.time.ZonedDateTime;
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
 public class ExtendedLogRecord implements LogRecord {
-    private String ip;
-    private String identifier;
-    private String userId;
-    private ZonedDateTime timeStamp;
-    private HttpMethod method;
-    private String resource;
-    private HttpProtocol protocol;
-    private int statusCode;
-    private long size;
-    private String referrer;
-    private String userAgent;
+    private final String ip;
+    private final String identifier;
+    private final String userId;
+    private final ZonedDateTime timeStamp;
+    private final HttpMethod method;
+    private final String resource;
+    private final HttpProtocol protocol;
+    private final int statusCode;
+    private final long size;
+    private final String referrer;
+    private final String userAgent;
 
     private ExtendedLogRecord(Builder builder) {
         this.ip = builder.ip;

@@ -1,7 +1,6 @@
-package com.softserve.logparser.core.impl;
+package com.softserve.logparser.core.filereader;
 
-import com.softserve.logparser.core.FileReader;
-import com.softserve.logparser.core.LogParserContext;
+import com.softserve.logparser.core.context.LogParserContext;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,10 +9,9 @@ import java.util.stream.Stream;
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public final class FileReaderImpl implements FileReader {
+public final class FileReader {
 
-    @Override
-    public Stream<String> read() {
+    public static Stream<String> read() {
         LogParserContext context = LogParserContext.getInstance();
         return context.getPaths().stream()
                 .flatMap(path -> {

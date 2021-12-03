@@ -1,4 +1,4 @@
-package com.softserve.logparser.core;
+package com.softserve.logparser.core.processor;
 
 import java.util.Map;
 

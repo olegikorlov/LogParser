@@ -1,6 +1,4 @@
-package com.softserve.logparser.core.impl;
-
-import com.softserve.logparser.core.StatInfo;
+package com.softserve.logparser.core.processor;
 
 import java.util.Map;
 
