@@ -4,18 +4,18 @@ import com.softserve.logparser.core.comandline.option.Key;
 import com.softserve.logparser.core.comandline.option.Option;
 import com.softserve.logparser.core.comandline.option.OptionType;
 import com.softserve.logparser.core.context.LogParserContext;
-import com.softserve.logparser.core.logrecord.LogRecord;
+import com.softserve.logparser.core.logrecord.ExtendedLogRecord;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class LogRecordProcessor {
 
-    private LogRecordProcessor() {
-    }
-
-    public static StatInfo process(Stream<LogRecord> logRecordStream) {
+    public static StatInfo process(Stream<ExtendedLogRecord> logRecordStream) {
         LogParserContext context = LogParserContext.getInstance();
         Set<Option> keys = context.getKeys();
 
@@ -28,19 +28,19 @@ public final class LogRecordProcessor {
             }
             Map<String, Long> map = new HashMap<>();
             map.put(String.format("%n%s", stringBuilder), 0L);
-            return new StatInfoImpl(map, List.of(new Option(Key.HELP)));
+            return new StatInfo(map, List.of(new Option(Key.HELP)));
         }
 
         LocalDateTime fromDate = LocalDateTime.parse(getFromDate(keys));
         LocalDateTime toDate = LocalDateTime.parse(getToDate(keys));
         int limit = getLimit(keys);
 
-        Stream<LogRecord> logRecordFilteredByDate = logRecordStream
+        Stream<ExtendedLogRecord> logRecordFilteredByDate = logRecordStream
                 .filter(logRecord -> logRecord.getTimeStamp().toLocalDateTime().isAfter(fromDate)
                         && logRecord.getTimeStamp().toLocalDateTime().isBefore(toDate));
 
         Option identifierOption = keys.stream()
-                .filter(option -> option.getType().equals(OptionType.IDENTIFIER))
+                .filter(option -> option.getKey().getType().equals(OptionType.IDENTIFIER))
                 .findFirst()
                 .orElse(new Option(Key.IP));
 
@@ -55,7 +55,7 @@ public final class LogRecordProcessor {
         List<Option> info = List.of(identifierOption);
 
 
-        return new StatInfoImpl(orderKey.apply(map, limit), info);
+        return new StatInfo(orderKey.apply(map, limit), info);
     }
 
     private static int getLimit(Set<Option> keys) {
