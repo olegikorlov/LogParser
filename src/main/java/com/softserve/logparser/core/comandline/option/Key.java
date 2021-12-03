@@ -30,13 +30,7 @@ public enum Key {
     ASC(OptionType.METHOD) {
         @Override
         public Map<String, Long> apply(Map<String, Long> map, int limit) {
-            return map
-                    .entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue())
-                    .limit(limit)
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                            (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+            return getSortedMapByOrderWithLimit(map, limit, Comparator.naturalOrder());
         }
     },
 
@@ -44,13 +38,7 @@ public enum Key {
     DESC(OptionType.METHOD) {
         @Override
         public Map<String, Long> apply(Map<String, Long> map, int limit) {
-            return map
-                    .entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .limit(limit)
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                            (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+            return getSortedMapByOrderWithLimit(map, limit, Comparator.reverseOrder());
         }
     },
 
@@ -58,8 +46,7 @@ public enum Key {
     IP(OptionType.IDENTIFIER) {
         @Override
         public Map<String, Long> apply(Stream<ExtendedLogRecord> logRecordStream, String arg) {
-            return getStringLongMap(arg, logRecordStream
-                    .map(ExtendedLogRecord::getIp), logRecordStream);
+            return getStringLongMap(logRecordStream.map(ExtendedLogRecord::getIp), arg);
         }
     },
 
@@ -71,8 +58,8 @@ public enum Key {
                     ".*" :
                     arg.replace("*", "[0-9]");
             return logRecordStream
-                    .filter(logRecord -> Integer.toString(logRecord.getStatusCode()).matches(pattern))
                     .map(ExtendedLogRecord::getStatusCode)
+                    .filter(statusCode -> Integer.toString(statusCode).matches(pattern))
                     .map(String::valueOf)
                     .collect(Collectors.toMap(key -> key, value -> 1L, Long::sum, LinkedHashMap::new));
         }
@@ -82,8 +69,7 @@ public enum Key {
     RES(OptionType.IDENTIFIER) {
         @Override
         public Map<String, Long> apply(Stream<ExtendedLogRecord> logRecordStream, String arg) {
-            return getStringLongMap(arg, logRecordStream
-                    .map(ExtendedLogRecord::getResource), logRecordStream);
+            return getStringLongMap(logRecordStream.map(ExtendedLogRecord::getResource), arg);
         }
     },
 
@@ -91,8 +77,7 @@ public enum Key {
     REF(OptionType.IDENTIFIER) {
         @Override
         public Map<String, Long> apply(Stream<ExtendedLogRecord> logRecordStream, String arg) {
-            return getStringLongMap(arg, logRecordStream
-                    .map(ExtendedLogRecord::getReferrer), logRecordStream);
+            return getStringLongMap(logRecordStream.map(ExtendedLogRecord::getReferrer), arg);
         }
     },
 
@@ -105,16 +90,25 @@ public enum Key {
         }
     };
 
+    private static Map<String, Long> getSortedMapByOrderWithLimit(
+            Map<String, Long> map, int limit, Comparator<Long> order) {
+        return map
+                .entrySet()
+                .parallelStream()
+                .sorted(Map.Entry.comparingByValue(order))
+                .limit(limit)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+    }
+
     private final OptionType type;
 
     Key(OptionType type) {
         this.type = type;
     }
 
-    private static Map<String, Long> getStringLongMap(String arg, Stream<String> stream, Stream<ExtendedLogRecord> logRecordStream) {
-        String pattern = arg.equals("") ?
-                ".*" :
-                arg.replace("*", ".*");
+    private static Map<String, Long> getStringLongMap(Stream<String> stream, String arg) {
+        String pattern = arg.equals("") ? ".*" : arg.replace("*", ".*");
         return stream
                 .filter(s -> s.matches(pattern))
                 .collect(Collectors.toMap(key -> key, value -> 1L, Long::sum, LinkedHashMap::new));

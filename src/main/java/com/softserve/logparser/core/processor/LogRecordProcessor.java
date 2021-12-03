@@ -39,14 +39,14 @@ public final class LogRecordProcessor {
                 .filter(logRecord -> logRecord.getTimeStamp().toLocalDateTime().isAfter(fromDate)
                         && logRecord.getTimeStamp().toLocalDateTime().isBefore(toDate));
 
-        Option identifierOption = keys.stream()
+        Option identifierOption = keys.parallelStream()
                 .filter(option -> option.getKey().getType().equals(OptionType.IDENTIFIER))
                 .findFirst()
                 .orElse(new Option(Key.IP));
 
         Map<String, Long> map = identifierOption.getKey().apply(logRecordFilteredByDate, identifierOption.getValue());
 
-        Key orderKey = keys.stream()
+        Key orderKey = keys.parallelStream()
                 .map(Option::getKey)
                 .filter(key -> key.equals(Key.ASC) || key.equals(Key.DESC))
                 .findFirst()
@@ -59,7 +59,7 @@ public final class LogRecordProcessor {
     }
 
     private static int getLimit(Set<Option> keys) {
-        return keys.stream()
+        return keys.parallelStream()
                 .filter(option -> option.equals(new Option(Key.LIMIT)))
                 .findFirst()
                 .map(Option::getValue)
@@ -68,7 +68,7 @@ public final class LogRecordProcessor {
     }
 
     private static String getFromDate(Set<Option> keys) {
-        return keys.stream()
+        return keys.parallelStream()
                 .filter(option -> option.equals(new Option(Key.FROM)))
                 .map(Option::getValue)
                 .findFirst()
@@ -76,7 +76,7 @@ public final class LogRecordProcessor {
     }
 
     private static String getToDate(Set<Option> keys) {
-        return keys.stream()
+        return keys.parallelStream()
                 .filter(option -> option.equals(new Option(Key.TO)))
                 .map(Option::getValue)
                 .findFirst()
