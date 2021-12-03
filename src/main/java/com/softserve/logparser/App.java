@@ -1,0 +1,36 @@
+package com.softserve.logparser;
+
+import com.softserve.logparser.core.*;
+import com.softserve.logparser.core.impl.CommandLineParserImpl;
+import com.softserve.logparser.core.impl.FileReaderImpl;
+import com.softserve.logparser.core.impl.ReporterImpl;
+import com.softserve.logparser.core.impl.processor.LogRecordProcessorImpl;
+
+import java.io.IOException;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
+public class App {
+
+    public static void main(String[] args) throws IOException {
+
+        CommandLineParser commandLineParser = new CommandLineParserImpl();
+        commandLineParser.parse(args);
+
+        FileReader fileReader = new FileReaderImpl();
+        Stream<String> stringStream = fileReader.read();
+        Stream<LogRecord> logRecordStream = stringStream
+                .map(LogRecordParser::parse)
+                .filter(Predicate.not(Optional::isEmpty))
+                .map(Optional::get);
+
+        LogRecordProcessor logRecordProcessor = new LogRecordProcessorImpl();
+        StatInfo statInfo = logRecordProcessor.process(logRecordStream);
+
+        Reporter reporter = new ReporterImpl(statInfo);
+        reporter.buildReport(System.out::println);
+
+    }
+
+}
