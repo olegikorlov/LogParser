@@ -17,13 +17,13 @@ public final class LogRecordProcessorImpl implements LogRecordProcessor {
         LogParserContext context = LogParserContext.getInstance();
         Map<String, String> keys = context.getKeys();
 
-        LocalDateTime date1 = LocalDateTime.parse(keys.getOrDefault("FROM", LocalDateTime.MIN.toString()));
-        LocalDateTime date2 = LocalDateTime.parse(keys.getOrDefault("TO", LocalDateTime.MAX.toString()));
+        LocalDateTime dateFrom = LocalDateTime.parse(keys.getOrDefault("FROM", LocalDateTime.MIN.toString()));
+        LocalDateTime dateBefore = LocalDateTime.parse(keys.getOrDefault("TO", LocalDateTime.MAX.toString()));
 
         int limit = Integer.parseInt(keys.getOrDefault("L", Integer.toString(Integer.MAX_VALUE)));
 
         Stream<LogRecord> filteredStream = logRecordStream
-                .filter(s -> s.getTimeStamp().toLocalDateTime().isAfter(date1) && s.getTimeStamp().toLocalDateTime().isBefore(date2));
+                .filter(s -> s.getTimeStamp().toLocalDateTime().isAfter(dateFrom) && s.getTimeStamp().toLocalDateTime().isBefore(dateBefore));
 
         String mainOption = keys.keySet().stream()
                 .filter(k -> k.equals("IP") || k.equals("RES") || k.equals("SC") || k.equals("SIZE"))
@@ -36,6 +36,11 @@ public final class LogRecordProcessorImpl implements LogRecordProcessor {
                 .findFirst()
                 .orElse("N");
 
-        return new StatInfoImpl(Order.valueOf(order).apply(map, limit));
+        map = Order.valueOf(order).apply(map, limit);
+
+        List<String> list = List.of(
+                mainOption, keys.getOrDefault(mainOption, ""), order);
+
+        return new StatInfoImpl(map, list);
     }
 }

@@ -12,27 +12,35 @@ public enum Option {
     IP {
         @Override
         protected Map<String, Long> apply(Stream<LogRecord> logRecordStream, String arg) {
+            String pattern = arg.equals("") ?
+                    ".*" :
+                    arg.replace("*", ".*");
             return logRecordStream
                     .map(LogRecord::getIP)
-                    .filter(s -> s.startsWith(arg))
+                    .filter(s -> s.matches(pattern))
                     .collect(Collectors.toMap(key -> key, value -> 1L, Long::sum, LinkedHashMap::new));
         }
     },
     RES {
         @Override
         protected Map<String, Long> apply(Stream<LogRecord> logRecordStream, String arg) {
+            String pattern = arg.equals("") ?
+                    ".*" :
+                    arg.replace("*", ".*");
             return logRecordStream
                     .map(LogRecord::getResource)
-                    .filter(s -> s.contains(arg))
+                    .filter(s -> s.matches(pattern))
                     .collect(Collectors.toMap(key -> key, value -> 1L, Long::sum, LinkedHashMap::new));
         }
     },
     SC {
         @Override
         protected Map<String, Long> apply(Stream<LogRecord> logRecordStream, String arg) {
-            String temp = arg.replace("x", "");
+            String pattern = arg.equals("") ?
+                    ".*" :
+                    arg.replace("*", "[0-9]");
             return logRecordStream
-                    .filter(logRecord -> Integer.toString(logRecord.getStatusCode()).startsWith(temp))
+                    .filter(s -> Integer.toString(s.getStatusCode()).matches(pattern))
                     .map(LogRecord::getResource)
                     .collect(Collectors.toMap(key -> key, value -> 1L, Long::sum, LinkedHashMap::new));
         }
