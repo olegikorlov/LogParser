@@ -6,6 +6,6 @@ package com.softserve.logparser.core.comandline.option;
 public enum OptionType {
 
     METHOD,
-    IDENTIFIER;
+    IDENTIFIER
 
 }

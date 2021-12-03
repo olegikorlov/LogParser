@@ -44,7 +44,6 @@ public final class LogRecordProcessor {
 
         Option identifierOption = keys.stream()
                 .filter(option -> option.getType().equals(OptionType.IDENTIFIER))
-//                .peek(System.out::println)
                 .findFirst()
                 .orElse(new Option(Key.IP));
 

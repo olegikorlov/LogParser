@@ -1,6 +1,7 @@
 package com.softserve.logparser.core.comandline.option;
 
 import com.softserve.logparser.core.logrecord.LogRecord;
+import java.util.Collections;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -57,9 +58,12 @@ public enum Key {
     IP(OptionType.IDENTIFIER) {
         @Override
         public Map<String, Long> apply(Stream<LogRecord> logRecordStream, String arg) {
+            String pattern = arg.equals("") ?
+                    ".*" :
+                    arg.replace("*", ".*");
             return logRecordStream
                     .map(LogRecord::getIP)
-                    .filter(s -> s.startsWith(arg))
+                    .filter(s -> s.matches(pattern))
                     .collect(Collectors.toMap(key -> key, value -> 1L, Long::sum, LinkedHashMap::new));
         }
     },
@@ -68,9 +72,11 @@ public enum Key {
     SC(OptionType.IDENTIFIER) {
         @Override
         public Map<String, Long> apply(Stream<LogRecord> logRecordStream, String arg) {
-            String temp = arg.replace("x", "");
+            String pattern = arg.equals("") ?
+                    ".*" :
+                    arg.replace("*", "[0-9]");
             return logRecordStream
-                    .filter(logRecord -> Integer.toString(logRecord.getStatusCode()).startsWith(temp))
+                    .filter(logRecord -> Integer.toString(logRecord.getStatusCode()).matches(pattern))
                     .map(LogRecord::getResource)
                     .collect(Collectors.toMap(key -> key, value -> 1L, Long::sum, LinkedHashMap::new));
         }
@@ -80,9 +86,12 @@ public enum Key {
     RES(OptionType.IDENTIFIER) {
         @Override
         public Map<String, Long> apply(Stream<LogRecord> logRecordStream, String arg) {
+            String pattern = arg.equals("") ?
+                    ".*" :
+                    arg.replace("*", ".*");
             return logRecordStream
                     .map(LogRecord::getResource)
-                    .filter(s -> s.contains(arg))
+                    .filter(s -> s.matches(pattern))
                     .collect(Collectors.toMap(key -> key, value -> 1L, Long::sum, LinkedHashMap::new));
         }
     },
@@ -91,9 +100,12 @@ public enum Key {
     REF(OptionType.IDENTIFIER) {
         @Override
         public Map<String, Long> apply(Stream<LogRecord> logRecordStream, String arg) {
+            String pattern = arg.equals("") ?
+                    ".*" :
+                    arg.replace("*", ".*");
             return logRecordStream
                     .map(LogRecord::getReferrer)
-                    .filter(s -> s.contains(arg))
+                    .filter(s -> s.matches(pattern))
                     .collect(Collectors.toMap(key -> key, value -> 1L, Long::sum, LinkedHashMap::new));
         }
     },
@@ -118,10 +130,10 @@ public enum Key {
     }
 
     public Map<String, Long> apply(Stream<LogRecord> logRecordStream, String arg) {
-        return null;
+        return Collections.emptyMap();
     }
 
     public Map<String, Long> apply(Map<String, Long> map, int limit) {
-        return null;
+        return Collections.emptyMap();
     }
 }
